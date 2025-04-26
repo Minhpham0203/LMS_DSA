@@ -1,6 +1,7 @@
 #include <bits/stdc++.h> // Thư viện bao gồm hầu hết các thư viện chuẩn của C++
 #include <chrono>       // Thư viện hỗ trợ các chức năng liên quan đến thời gian
 using namespace std;    // Sử dụng không gian tên std để tránh việc gõ std:: trước các thành phần của thư viện chuẩn
+#include "UserManage.h" // Include header của UserManager
 
 // Khai báo biến toàn cục (nên hạn chế sử dụng biến toàn cục trong các dự án lớn)
 vector<vector<string>> content; // Một vector 2D chứa các chuỗi, có thể dùng để lưu trữ dữ liệu đọc từ file CSV
@@ -139,6 +140,7 @@ public:
     void delete_book(string id);         // Phương thức xóa sách
     void see_issued_to_user(string id,string uid); // Phương thức xem sách đã mượn của một người dùng cụ thể
     void see_issued_book(string id,string isbn);   // Phương thức xem thông tin người mượn của một cuốn sách cụ thể
+    // void addUser(const std::string& librarianId); // Đã đổi tên thành addUser
 };
 
 // Phương thức hiển thị menu cho sinh viên
@@ -718,16 +720,24 @@ void Librarian :: add_user(string id){ // id: ID của thủ thư đang thực h
     string _name,_id,_password,_type;
     cout<<"Enter name: ";
     cin.ignore(); // Xóa bộ đệm bàn phím
-    getline(cin,name); // Nhập tên người dùng
-    cout<<"Enter id : ";
+    getline(cin,_name); // Nhập tên người dùng   
+    cout<<"Enter id : ";    
     cin>>_id;       // Nhập ID người dùng
+
     cout<<"Enter password : ";
     cin>>_password; // Nhập mật khẩu
+    
     cout<<"Enter type of the user : 1 if student, 2 if professor, 3 if librarian : ";
     cin>>_type;     // Nhập loại người dùng
-    fstream fout("all_users_data.csv",ios::out | ios::app); // Mở file ở chế độ ghi và thêm vào cuối
-    fout<<name<<","<<_id<<","<<_password<<","<<_type<<'\n'; // Ghi thông tin người dùng mới vào file
-    cout<<"New user has been added.\n";
+
+        // fstream fout("all_users_data.csv",ios::out | ios::app); // Mở file ở chế độ ghi và thêm vào cuối
+        // fout<<name<<","<<_id<<","<<_password<<","<<_type<<'\n'; // Ghi thông tin người dùng mới vào file
+        // cout<<"New user has been added.\n";
+    
+    std::cout << "Debug: Name read from input: " << _name << std::endl;
+    UserManage UserManage;
+    UserManage.addUser_to_CSV(_name, _id, _password, _type);
+
 }
 
 // Phương thức thêm sách mới
